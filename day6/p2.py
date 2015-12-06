@@ -4,15 +4,16 @@ f = open("input.txt")
 d = f.readlines()
 
 lights = [[0 for x in range(1000)] for x in range(1000)]
-coords = re.compile("(\d+),(\d+) through (\d+),(\d+)")
+coords = re.compile("(turn on|turn off|toggle) (\d+),(\d+) through (\d+),(\d+)")
 for l in d:
     lcoords = coords.search(l)
-    startx, starty, endx, endy = [int(c) for c in lcoords.groups()]
+    t = lcoords.groups()[0]
+    startx, starty, endx, endy = [int(c) for c in lcoords.groups()[1:]]
     for x in range(startx, endx + 1):
         for y in range(starty, endy+1):
-            if l.startswith("toggle"):
+            if t == "toggle":
                 lights[x][y] = lights[x][y] + 2
-            elif l.startswith("turn on"):
+            elif t == "turn on":
                 lights[x][y] = lights[x][y] + 1
             else:
                 lights[x][y] = max(0, lights[x][y] - 1)
